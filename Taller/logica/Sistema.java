@@ -26,15 +26,9 @@ public class Sistema {
 		cargarGyms();
 		menuInicial();
 		
-		
-		
-		
-		
 	}
-
 	
-	private static void menuInicial()  throws FileNotFoundException{
-		
+	private static void menuInicial()  throws FileNotFoundException{	
 		boolean flag = true;
 		do {
 			System.out.println("1) Continuar.");
@@ -45,11 +39,16 @@ public class Sistema {
 			
 			switch (opcion) {
 			case "1":
-				flag = menuContinuar();
+				if(menuContinuar()) {
+					menu();
+					flag = false;
+				}
 				break;
 			case "2":
-				menuNuevaPartida();
-				flag =false;
+				if(menuNuevaPartida()) {
+					menu();
+					flag = false;
+				}
 				break;
 			case "3":
 				flag=false;
@@ -58,8 +57,59 @@ public class Sistema {
 				System.out.println("Entregue una opcion valida porfavor");
 				break;
 			}
+		} while (flag);	
+	}
+
+	private static void menu() {
+		boolean flag = true;
+		do {
+			System.out.println(jugador.getNombre() + ", que deseas hacer?");
+			System.out.println("1) Revisar equipo.");
+			System.out.println("2) Salir a capturar.");
+			System.out.println("3) Acceso al PC (cambiar Pokémon del equipo).");
+			System.out.println("4) Retar un gimnasio.");
+			System.out.println("5) Desafío al Alto Mando.");
+			System.out.println("6) Curar Pokémon.");
+			System.out.println("7) Guardar.");
+			System.out.println("8) Guardar y Salir.");
+			System.out.print("Ingrese Opcion: ");
+			String opcion = s.nextLine();
+			switch(opcion) {
+			case "1":
+				jugador.obtenerEquipo();
+				break;
+			case "2":
+				capturarPokemon();
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				jugador.curarPokemons();
+				break;
+			case "7":
+				guardarPartida(jugador);
+				break;
+			case "8":
+				guardarPartida(jugador);
+				flag = false;
+				System.out.println("Nos vemos entrenador...");
+				break;
+			default:
+				System.out.println("Entregue una opcion valida porfavor");
+				break;	
+			}
 			
 		} while (flag);
+		
+		
+	}
+
+
+	private static void capturarPokemon() {
 		
 		
 	}
@@ -67,9 +117,9 @@ public class Sistema {
 	private static boolean menuContinuar() throws FileNotFoundException{
 		if(cargarPartidaAnterior()) {
 			System.out.println("Bienvenido "+ jugador.getNombre()+"!!");
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 		
 		
 	}
@@ -113,12 +163,18 @@ public class Sistema {
 		
 	}
 
-	private static void menuNuevaPartida() {
-		System.out.print("Ingrese un apodo: ");
-		String apodo = s.nextLine();
-		jugador = new Entrenador(apodo);
-		guardarPartida(jugador);
-		System.out.println("Bienvenido "+ jugador.getNombre()+"!!");
+	private static boolean menuNuevaPartida() {
+		try {
+			System.out.print("Ingrese un apodo: ");
+			String apodo = s.nextLine();
+			jugador = new Entrenador(apodo);
+			guardarPartida(jugador);
+			System.out.println("Bienvenido "+ jugador.getNombre()+"!!");
+			return true;
+		} catch (Exception e) {
+			System.out.println("Ocurrio un error no se pudo crear una nueva partida");
+			return false;
+		}
 		
 	}
 
