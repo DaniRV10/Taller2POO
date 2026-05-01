@@ -7,6 +7,7 @@ public class Pokemon {
 	private int vida,ataque,defensa,SpAtaque,SpDefensa,velocidad;
 	private String tipo;
 	private String estado;
+	
 	public Pokemon(String nombre, String habitat, double porcentajeAparicion, int vida, int ataque, int defensa,
 			int spAtaque, int spDefensa, int velocidad, String tipo) {
 		super();
@@ -43,9 +44,43 @@ public class Pokemon {
 		return habitat;
 	}
 
+	public double getPorcentajeAparicion() {
+		return porcentajeAparicion;
+	}
+
+	public int getVida() {
+		return vida;
+	}
+
+	public int getAtaque() {
+		return ataque;
+	}
+
+	public int getDefensa() {
+		return defensa;
+	}
+
+	public int getSpAtaque() {
+		return SpAtaque;
+	}
+
+	public int getSpDefensa() {
+		return SpDefensa;
+	}
+
+	public int getVelocidad() {
+		return velocidad;
+	}
+
 	public String getTipo() {
 		return tipo;
 	}
+
+	@Override
+	public String toString() {
+		return "Pokemon [nombre=" + nombre + ", estado=" + estado + "]";
+	}
+
 	
 	
 	

@@ -30,6 +30,26 @@ public class Entrenador {
 		misPokemon.add(p);
 	}
 	
+	public void añadirMedalla(String nombre) {
+		lideresDerrotados.add(nombre);
+	}
+	
+	
+
+	public ArrayList<String> getLideresDerrotados() {
+		return lideresDerrotados;
+	}
+
+	public ArrayList<Pokemon> getMisPokemon() {
+		return misPokemon;
+	}
+
+
+
+	
+	
+	
+	
 	
 	
 

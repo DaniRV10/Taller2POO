@@ -1,6 +1,9 @@
 package logica;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,38 +18,210 @@ public class Sistema {
 	static Scanner s = new Scanner(System.in);
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException{
 		
 		cargarPokedex();
 		cargarHabitats();
-		//cargarAltoMando();
-		//cargarGyms();
-
+		cargarAltoMando();
+		cargarGyms();
+		menuInicial();
+		
+		
 		
 		
 		
 	}
 
-
-	private static void cargarGyms() {
-		// TODO Auto-generated method stub
+	
+	private static void menuInicial()  throws FileNotFoundException{
+		
+		boolean flag = true;
+		do {
+			System.out.println("1) Continuar.");
+			System.out.println("2) Nueva Partida.");
+			System.out.println("3) Salir.");
+			System.out.print("Ingrese Opcion: ");
+			String opcion = s.nextLine();
+			
+			switch (opcion) {
+			case "1":
+				flag = menuContinuar();
+				break;
+			case "2":
+				menuNuevaPartida();
+				flag =false;
+				break;
+			case "3":
+				flag=false;
+				break;
+			default:
+				System.out.println("Entregue una opcion valida porfavor");
+				break;
+			}
+			
+		} while (flag);
+		
 		
 	}
 
-
-	private static void cargarAltoMando() {
-		// TODO Auto-generated method stub
+	private static boolean menuContinuar() throws FileNotFoundException{
+		if(cargarPartidaAnterior()) {
+			System.out.println("Bienvenido "+ jugador.getNombre()+"!!");
+			return false;
+		}
+		return true;
+		
 		
 	}
 
+	private static boolean cargarPartidaAnterior() throws FileNotFoundException{
+		try {
+			File archivo = new File("Registros.txt");
+			Scanner lector = new Scanner(archivo);
+			
+			if(!lector.hasNextLine()) {
+				System.out.println("No se encontro una partida guardada");
+				return false;
+			}
+			
+			String linea = lector.nextLine();
+			String[] partes = linea.split(";");
+			
+			jugador = new Entrenador(partes[0]);
+			if(!partes[1].equalsIgnoreCase("none")) {
+				String[] medallas = partes[1].split(",");
+				for(int i = 0; i < medallas.length ; i++) {
+					jugador.añadirMedalla(medallas[i]);
+				}
+			}
+			
+			while(lector.hasNextLine()) {
+				linea = lector.nextLine();
+				partes = linea.split(";");
+				Pokemon p = obtenerPokemonDeLaPokedex(partes[0]);
+				p.setEstado(partes[1]);
+				jugador.añadirPokemon(p);
+			}	
+			return true;
+	
+		} catch (Exception e) {
+			System.out.println("No se encontro el archivo");
+			return false;
+		}
+		
+		
+		
+	}
 
-	private static void cargarHabitats() {
+	private static void menuNuevaPartida() {
+		System.out.print("Ingrese un apodo: ");
+		String apodo = s.nextLine();
+		jugador = new Entrenador(apodo);
+		guardarPartida(jugador);
+		System.out.println("Bienvenido "+ jugador.getNombre()+"!!");
+		
+	}
+
+	private static void guardarPartida(Entrenador jugador2) {
+		String medallas = jugador2.getLideresDerrotados().isEmpty()? "none": String.join(",", jugador2.getLideresDerrotados());
+		
+		try {
+			FileWriter fw = new FileWriter("Registros.txt");
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        
+	        bw.write(jugador2.getNombre() + ";" + medallas );
+	        bw.newLine();
+	        for(Pokemon p : jugador2.getMisPokemon()) {
+	        	bw.write(p.getNombre() + ";" + p.getEstado());
+	        	bw.newLine();
+	        }
+	        
+	        bw.close();
+	        fw.close();
+	        
+		}catch (Exception e) {
+			System.out.println("Error al escribir en el archivo");
+		}
+			
+		
+	}
+
+	public static Pokemon obtenerPokemonDeLaPokedex(String nombreBuscado) {
+        for (Pokemon p : pokedex) {
+            if (p.getNombre().equalsIgnoreCase(nombreBuscado)) {
+                // Retornamos una copia para no alterar la Pokedex original
+                return new Pokemon(
+                    p.getNombre(), p.getHabitat(), p.getPorcentajeAparicion(),
+                    p.getVida(), p.getAtaque(), p.getDefensa(),
+                    p.getSpAtaque(), p.getSpDefensa(), p.getVelocidad(),
+                    p.getTipo()
+                );
+            }
+        }
+        return null; // Si no existe
+    }
+
+	private static void cargarGyms() throws FileNotFoundException{
+		try {
+			File archivo = new File("Gimnasios.txt");
+			Scanner lector = new Scanner(archivo);
+			
+			while(lector.hasNextLine()) {
+				String linea = lector.nextLine().trim();
+				String[] partes = linea.split(";");
+				int numGym = Integer.parseInt(partes[0]);
+				String nombre = partes[1];
+				String estado = partes[2];
+				int cantPokemon = Integer.parseInt(partes[3]);
+				ArrayList<Pokemon> pokemons = new ArrayList<>(cantPokemon);
+				for(int i = 4; i<cantPokemon+4 ; i++) {
+					Pokemon p = obtenerPokemonDeLaPokedex(partes[i]);
+					pokemons.add(p);
+				}
+				
+				lideresGym.add(new Gym(numGym,nombre, estado,cantPokemon,pokemons));	
+				
+			}
+				
+		} catch (Exception e) {
+			System.out.println("No se encontro el archivo");
+		}
+		
+	}
+
+	private static void cargarAltoMando() throws FileNotFoundException{
+		try {
+			File archivo = new File("Alto Mando.txt");
+			Scanner lector = new Scanner(archivo);
+			
+			while(lector.hasNextLine()) {
+				String linea = lector.nextLine().trim();
+				String[] partes = linea.split(";");
+				int numAltoMando = Integer.parseInt(partes[0]);
+				String nombre = partes[1];
+				ArrayList<Pokemon> pokemons = new ArrayList<>(6);
+				for(int i = 2; i<8 ; i++) {
+					Pokemon p = obtenerPokemonDeLaPokedex(partes[i]);
+					pokemons.add(p);
+				}
+				
+				altoMando.add(new AltoMando(numAltoMando,nombre,pokemons));	
+				
+			}
+				
+		} catch (Exception e) {
+			System.out.println("No se encontro el archivo");
+		}
+		
+	}
+
+	private static void cargarHabitats() throws FileNotFoundException{
 		try {
 			File archivo = new File("Habitats.txt");
 			Scanner lector = new Scanner(archivo);
 			
 			while(lector.hasNextLine()) {
-				String linea = lector.nextLine();
+				String linea = lector.nextLine().trim();
 				habitats.add(linea);
 			}
 			
@@ -59,8 +234,7 @@ public class Sistema {
 		
 	}
 
-
-	private static void cargarPokedex() {
+	private static void cargarPokedex() throws FileNotFoundException{
 		try {
 			File archivo = new File("Pokedex.txt");
 			Scanner lector = new Scanner(archivo);

@@ -9,12 +9,19 @@ public class AltoMando {
 	private ArrayList<Pokemon> pokemons;
 	
 	
-	public AltoMando(int numAltoMando, String nombre) {
+	public AltoMando(int numAltoMando, String nombre, ArrayList<Pokemon> pokemons) {
 		super();
 		this.numAltoMando = numAltoMando;
 		this.nombre = nombre;
-		this.pokemons = new ArrayList<>(6);
+		this.pokemons = pokemons;
 	}
+
+
+	@Override
+	public String toString() {
+		return "AltoMando [numAltoMando=" + numAltoMando + ", nombre=" + nombre + ", pokemons=" + pokemons + "]";
+	}
+	
 	
 	
 	
