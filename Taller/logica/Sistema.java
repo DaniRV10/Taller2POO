@@ -26,6 +26,7 @@ public class Sistema {
 		cargarGyms();
 		menuInicial();
 		
+		
 	}
 	
 	private static void menuInicial()  throws FileNotFoundException{	
@@ -63,6 +64,7 @@ public class Sistema {
 	private static void menu() {
 		boolean flag = true;
 		do {
+			System.out.println();
 			System.out.println(jugador.getNombre() + ", que deseas hacer?");
 			System.out.println("1) Revisar equipo.");
 			System.out.println("2) Salir a capturar.");
@@ -110,8 +112,97 @@ public class Sistema {
 
 
 	private static void capturarPokemon() {
+		System.out.println("Donde deseas ir a explorar?");
+		System.out.println("Zonas disponibles:");
+		int i = 1;
+		for(String s: habitats) {
+			System.out.println(i+") "+s);
+			i++;
+		}
+		System.out.println(i+") Volver al menu.");
+		boolean flag = true;
+		do {	
+			try {
+				System.out.print("Ingrese Zona: ");
+				int numZona = s.nextInt();
+				s.nextLine();//Limpiar buffer
+				if(numZona <= i) {
+					encontrarPokemon(habitats.get(numZona-1));
+					flag=false;
+				}else {
+					System.out.println("Ingrese una opcion valida");
+				}	
+			} catch (Exception e) {
+				System.out.println("Ingrese un numero porfavor");
+				s.nextLine(); //Limpiar buffer
+			}	
+		} while (flag);
+	}
+
+	private static void encontrarPokemon(String zonaElegida) {
+		ArrayList<Pokemon> posibles = new ArrayList<>();
+		for (Pokemon p : pokedex) {
+		    if (p.getHabitat().equalsIgnoreCase(zonaElegida) && !jugador.tieneAlPokemon(p.getNombre())) {
+		        posibles.add(p);
+		    }
+		}
+
+		//En caso de haber capturado todos los pokemones de la zona	
+		if (posibles.isEmpty()) {
+		    System.out.println("Ya has capturado todos los Pokémon de esta zona.");
+		    return;
+		}
+		
+		// Logica para obtener un pokemon aleatorio
+		double suerte = Math.random(); // numero entre 0  y 1 sin contar 1
+		double sumaProbabilidad = 0;
+		Pokemon pokemonEncontrado = null;
+		for(Pokemon p: posibles) {
+			sumaProbabilidad += p.getPorcentajeAparicion();
+			if(suerte <= sumaProbabilidad) {
+				pokemonEncontrado = obtenerPokemonDeLaPokedex(p.getNombre()); // Para obtener una copia del pokemon
+				break;
+			}
+		}
+		
+		if(pokemonEncontrado == null) {
+			System.out.println("Buscaste con cuidado, pero no encontraste nada nuevo...");
+			return;
+		}
+		
+		System.out.println("Oh!! Ha aparecido un increible "+ pokemonEncontrado.getNombre()+"!!");
+		boolean flag = true;
+		do {
+			System.out.println();
+			System.out.println("Que deseas hacer?");
+			System.out.println("1) Capturar");
+			System.out.println("2) Huir");
+			System.out.print("Ingrese opcion: ");
+			String opcion = s.nextLine();
+			switch (opcion) {
+			case "1":
+				System.out.println(pokemonEncontrado.getNombre() + " capturado con exito!!");
+				jugador.añadirPokemon(pokemonEncontrado);
+				flag=false;
+				break;
+			case "2":
+				System.out.println("Has logrado escapar con exito");
+				flag = false;
+				break;
+			default:
+				System.out.println("Ingrese una opcion valida");
+				break;
+			}
+			
+			
+			
+			
+		} while (flag);
 		
 		
+		
+		
+
 	}
 
 	private static boolean menuContinuar() throws FileNotFoundException{

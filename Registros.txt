@@ -1,0 +1,4 @@
+Clapt;none
+Magcargo;Vivo
+Wailord;Vivo
+Gigalith;Vivo
