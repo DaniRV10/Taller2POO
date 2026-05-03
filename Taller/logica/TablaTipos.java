@@ -1,6 +1,9 @@
 package logica;
 
 public class TablaTipos {
+	
+	//Lista tipos
+	  private static final String[] TIPOS = { "Normal", "Fuego", "Agua", "Planta", "Electrico", "Hielo", "Lucha", "Veneno", "Tierra", "Volador", "Psiquico", "Bicho", "Roca", "Fantasma", "Dragon", "Acero", "Siniestro", "Hada"};
     
     // Matriz de efectividad
     private static final double[][] EFECTIVIDAD = {
@@ -24,4 +27,21 @@ public class TablaTipos {
         {  1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.5, 0.5 }, // SINIESTRO
         {  1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0 }  // HADA
     };
+    
+    
+    // retorna el multiplicador de ataque sobre el defensor
+    public static double getEfectividad(String tipoAtacante, String tipoDefensor) {
+    	int fila = getIndiceTipo(tipoAtacante);
+    	int columna = getIndiceTipo(tipoDefensor);
+    	if (fila == -1 || columna == -1) return 1.0; // tipo desconocido = neutral
+    	return EFECTIVIDAD[fila][columna];
+    }
+    
+    private static int getIndiceTipo(String tipo) {
+        for (int i = 0; i < TIPOS.length; i++) {
+            if (TIPOS[i].equalsIgnoreCase(tipo)) return i;
+        }
+        return -1;
+    }
 }
+

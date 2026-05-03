@@ -49,6 +49,13 @@ public class Gym {
 		return pokemons;
 	}
 
+	
+
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 
 
 	@Override
@@ -56,6 +63,10 @@ public class Gym {
 		return "Gym [numGym=" + numGym + ", lider=" + lider + ", estado=" + estado + ", cantPokemon=" + cantPokemon
 				+ ", pokemons=" + pokemons + "]";
 	}
+
+
+
+	
 	
 	
 	
