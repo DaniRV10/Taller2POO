@@ -1,6 +1,7 @@
 # Taller 2: Programación Orientada a Objetos
 
 ## Descripcion del Proyecto
+Pokemon
 
 ## Integrantes
 - Carlos Alberto Montenegro Pérez - 22.154.893-0 - Akr0yy
