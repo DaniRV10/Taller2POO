@@ -75,6 +75,10 @@ public class Pokemon {
 	public String getTipo() {
 		return tipo;
 	}
+	
+	public int getSumaStats() {
+		return sumaStats();
+	}
 
 	@Override
 	public String toString() {

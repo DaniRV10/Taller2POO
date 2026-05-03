@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Sistema {
@@ -85,6 +86,7 @@ public class Sistema {
 				capturarPokemon();
 				break;
 			case "3":
+				accederPc();
 				break;
 			case "4":
 				break;
@@ -111,6 +113,69 @@ public class Sistema {
 		
 	}
 
+
+	private static void accederPc() {
+		boolean salir = false;
+		do {
+			ArrayList<Pokemon> lista = jugador.getMisPokemon();
+
+			if (lista.isEmpty()) {
+				System.out.println("No tienes ningun Pokemon aun");
+				return;
+			}
+
+			System.out.println("\n====== PC de " + jugador.getNombre() + " =====");
+			for (int i = 0; i < lista.size(); i++) {
+				Pokemon p = lista.get(i);
+				String lugar = (i < 6) ? " [EQUIPO]" : " [PC]";
+				System.out.println((i + 1) + ")" + p.getNombre() + " | " + p.getTipo() + " | " + "STATS: "
+						+ p.getSumaStats() + " | " + p.getEstado() + lugar);
+			}
+
+			System.out.println("");
+			System.out.println("1) Cambiar Pokemon");
+			System.out.println("2) Salir");
+			System.out.println("Ingrese Opcion: ");
+			String opcion = s.nextLine();
+
+			switch (opcion) {
+
+			case "1":
+				if (lista.size() < 2) {
+					System.out.println("Necesitas al menos 2 Pokemon");
+					break;
+				}
+
+				try {
+					System.out.print("Ingrese numero del primer Pokemon: ");
+					int pos1 = Integer.parseInt(s.nextLine()) - 1;
+					System.out.print("Ingrese numero del segundo Pokermon: ");
+					int pos2 = Integer.parseInt(s.nextLine()) - 1;
+
+					if (pos1 < 0 || pos1 >= lista.size() || pos2 < 0 || pos2 >= lista.size()) {
+						System.out.println("Numeros ingresado fuera de rango. Intenta de nuevo.");
+						break;
+					}
+
+					Collections.swap(lista, pos1, pos2);
+					System.out.println("Intercambio realizado con exito");
+					System.out.println(lista.get(pos1).getNombre() + " <- -> " + lista.get(pos2).getNombre());
+				} catch (Exception e) {
+					System.out.println("Ingrese un numero valido.");
+				}
+				break;
+
+			case "2":
+				salir = true;
+				break;
+
+			default:
+				System.out.println("Opcion invalida");
+				break;
+			}
+
+		} while (!salir);
+	}
 
 	private static void capturarPokemon() {
 		System.out.println("Donde deseas ir a explorar?");
@@ -223,6 +288,7 @@ public class Sistema {
 			
 			if(!lector.hasNextLine()) {
 				System.out.println("No se encontro una partida guardada");
+				lector.close();
 				return false;
 			}
 			
@@ -243,7 +309,7 @@ public class Sistema {
 				Pokemon p = obtenerPokemonDeLaPokedex(partes[0]);
 				p.setEstado(partes[1]);
 				jugador.añadirPokemon(p);
-			}	
+			}	lector.close();
 			return true;
 	
 		} catch (Exception e) {
