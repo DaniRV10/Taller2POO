@@ -89,6 +89,7 @@ public class Sistema {
 				accederPc();
 				break;
 			case "4":
+				retarGimnasio();
 				break;
 			case "5":
 				break;
@@ -113,6 +114,72 @@ public class Sistema {
 		
 	}
 
+
+	private static void retarGimnasio() {
+		//Mostrar gimnasios disponibles
+		System.out.println("===== GIMNASIOS =====");
+		for (Gym g : lideresGym) {
+	        System.out.println(g.getNumGym() + ") " + g.getLider() + " - " + g.getEstado());
+	    }
+	    System.out.println(lideresGym.size() + 1 + ") Volver al menu.");
+	    
+	    boolean fin = true;
+	    do {
+	        try {
+	            System.out.print("Elige un gimnasio: ");
+	            int eleccion = Integer.parseInt(s.nextLine()) - 1;
+
+	            // Opcion volver
+	            if (eleccion == lideresGym.size()) {
+	                fin = false;
+	                break;
+	            }
+
+	            if (eleccion < 0 || eleccion >= lideresGym.size()) {
+	                System.out.println("Numero fuera de rango.");
+	                continue;
+	            }
+
+	            // Verificar progreso
+	            if (eleccion > 0 && lideresGym.get(eleccion - 1).getEstado().equalsIgnoreCase("Sin derrotar")) {
+	                System.out.println("Debes derrotar primero a " + lideresGym.get(eleccion - 1).getLider() + "!");
+	                continue;
+	            }
+
+	            // Verificar estado gym
+	            Gym gymElegido = lideresGym.get(eleccion);
+	            if (gymElegido.getEstado().equalsIgnoreCase("Derrotado")) {
+	                System.out.println("Ya derrotaste a este lider. Elige otro.");
+	                continue;
+	            }
+
+	            // Verificar que el jugador tenga al menos 1 pokemon vivo en su equipo
+	            if (!hayPokemonVivoEnEquipo()) {
+	                System.out.println("No tienes Pokemon vivos en tu equipo! Curalos primero.");
+	                continue;
+	            }
+
+	            batallarContraGym(gymElegido);
+	            fin = false;
+
+	        } catch (Exception e) {
+	            System.out.println("Ingresa un numero valido.");
+	        }
+	    } while (fin);
+	    
+	}
+
+	private static boolean hayPokemonVivoEnEquipo() {
+		ArrayList<Pokemon> equipo = jugador.getMisPokemon();
+	    for (int i = 0; i < 6 && i < equipo.size(); i++) {
+	        if (equipo.get(i).getEstado().equalsIgnoreCase("Vivo")) return true;
+	    }
+	    return false;
+	}
+
+	private static void batallarContraGym(Gym gymElegido) {
+		System.out.println("batalla");
+	}
 
 	private static void accederPc() {
 		boolean salir = false;

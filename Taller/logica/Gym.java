@@ -19,6 +19,37 @@ public class Gym {
 		this.pokemons = pokemons;
 	}
 
+	
+
+	public int getNumGym() {
+		return numGym;
+	}
+
+
+
+	public String getLider() {
+		return lider;
+	}
+
+
+
+	public String getEstado() {
+		return estado;
+	}
+
+
+
+	public int getCantPokemon() {
+		return cantPokemon;
+	}
+
+
+
+	public ArrayList<Pokemon> getPokemons() {
+		return pokemons;
+	}
+
+
 
 	@Override
 	public String toString() {
