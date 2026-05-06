@@ -17,6 +17,29 @@ public class AltoMando {
 	}
 
 
+	
+	
+	public int getNumAltoMando() {
+		return numAltoMando;
+	}
+
+
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+
+
+	public ArrayList<Pokemon> getPokemons() {
+		return pokemons;
+	}
+
+
+
+
 	@Override
 	public String toString() {
 		return "AltoMando [numAltoMando=" + numAltoMando + ", nombre=" + nombre + ", pokemons=" + pokemons + "]";

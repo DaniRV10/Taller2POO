@@ -92,6 +92,7 @@ public class Sistema {
 				retarGimnasio();
 				break;
 			case "5":
+				retarAltoMando();
 				break;
 			case "6":
 				jugador.curarPokemons();
@@ -114,6 +115,118 @@ public class Sistema {
 		
 	}
 
+//Validaciones retar altomando
+	private static void retarAltoMando() {
+		for (Gym g : lideresGym) {
+			if (g.getEstado().equalsIgnoreCase("Sin Derrotar")) {
+				System.out.println("Debes derrotar todos los gimnasios para retar al alto mando");
+				System.out.println("Derrota primero a: "+ g.getLider());
+				return;
+			}	
+		}
+		
+		 if (!hayPokemonVivoEnEquipo()) {
+             System.out.println("No tienes Pokemon vivos en tu equipo! Curalos primero.");
+             return; 
+		 }
+		 
+		 System.out.println("\n===== ALTO MANDO =====");
+		 
+		 boolean victoria = batallarAltoMando();
+		 if (victoria) {
+			 System.out.println("\nFELICITACIONES " + jugador.getNombre() +"!!!");
+			 System.out.println("Has derrota al alto mando y eres el nuevo Campeon de la Liga Pokemon.");
+		 }
+	}
+
+	private static boolean batallarAltoMando() {
+		for (AltoMando miembro : altoMando) {
+			System.out.println("\nDesafiando a " + miembro.getNombre() + "!!");
+
+			// Copia los pokemon del miembro
+			ArrayList<Pokemon> pokemonsMiembro = new ArrayList<>();
+			for (Pokemon p : miembro.getPokemons()) {
+				pokemonsMiembro.add(obtenerPokemonDeLaPokedex(p.getNombre()));
+			}
+
+			// Misma logica que la batalla de gimnasio
+
+			Pokemon pokemonRival = pokemonsMiembro.get(0);
+			Pokemon pokemonJugador = primerPokemonVivo(); // En caso de que no esten todos vivos es necesario verificar
+															// el primer pokemon vivo
+
+			System.out.println(miembro.getNombre() + " saca a " + pokemonRival.getNombre() + "!");
+			System.out.println(jugador.getNombre() + " saca a " + pokemonJugador.getNombre() + "!");
+			boolean batallaActiva = true;
+			int indiceRival = 0;
+			boolean miembroDerrotado = false; //variable para saber que el miembro fue derrotado, ya que no tiene estado
+
+			while (batallaActiva) {
+				System.out.println("\nQue deseas hacer?");
+				System.out.println("1) Atacar");
+				System.out.println("2) Cambiar de Pokemon");
+				System.out.println("3) Rendirse");
+				System.out.print("Ingrese Opcion: ");
+				String opcion = s.nextLine();
+
+				switch (opcion) {
+				case "1":
+					pokemonJugador = simularAtaque(pokemonJugador, pokemonRival);
+
+					// Si el pokemon del jugador fue derrotado
+					if (pokemonJugador == null) {
+						if (!hayPokemonVivoEnEquipo()) {
+							System.out.println("Te has quedado sin pokemons en tu equipo!");
+							System.out.println("Volviendo al menu...");
+							batallaActiva = false;
+							break;
+						}
+						pokemonJugador = elegirPokemonParaCombate();
+						if (pokemonJugador == null) {
+							batallaActiva = false;
+							break;
+						}
+						System.out.println(jugador.getNombre() + " saca a " + pokemonJugador.getNombre() + "!");
+						break;
+					}
+
+					// Si el pokemon rival fue derrotado
+					if (pokemonRival.getEstado().equalsIgnoreCase("Debilitado")) {
+						indiceRival++;
+						if (indiceRival >= pokemonsMiembro.size()) {
+							// Jugador gana
+							System.out.println("Has derrotado a " + miembro.getNombre() + "!!");
+							miembroDerrotado = true;
+							batallaActiva = false;
+						} else {
+							pokemonRival = pokemonsMiembro.get(indiceRival);
+							System.out.println(miembro.getNombre() + " saca a " + pokemonRival.getNombre() + "!");
+						}
+					}
+					break;
+
+				case "2":
+					Pokemon nuevo = elegirPokemonParaCombate();
+					if (nuevo != null && !nuevo.getNombre().equals(pokemonJugador.getNombre())) {
+						pokemonJugador = nuevo;
+						System.out.println(jugador.getNombre() + " saca a " + pokemonJugador.getNombre() + "!");
+					}
+					break;
+
+				case "3":
+					System.out.println("Te has rendido. Volviendo al menu...");
+					batallaActiva = false;
+					break;
+
+				default:
+					System.out.println("Opcion invalida.");
+					break;
+				}
+			}
+			if (!miembroDerrotado) return false; //Si en algun momento no es derrotado el miembro, retorna false cortando los combates que faltan
+		}
+		return true;
+	}
 
 	private static void retarGimnasio() {
 		//Mostrar gimnasios disponibles
@@ -530,7 +643,15 @@ public class Sistema {
 				Pokemon p = obtenerPokemonDeLaPokedex(partes[0]);
 				p.setEstado(partes[1]);
 				jugador.añadirPokemon(p);
-			}	lector.close();
+			}	
+			
+			// Actualizar estado de gimnasios segun medallas
+			for (Gym g : lideresGym) {
+			    if (jugador.getLideresDerrotados().contains(g.getLider())) {
+			        g.setEstado("Derrotado");
+			    }
+			}
+			
 			return true;
 	
 		} catch (Exception e) {
