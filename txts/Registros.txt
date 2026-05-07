@@ -1,5 +1,5 @@
 juanito;EmmaLaArdillaRabiosa,MartinNegro,Ferran,Branco,Remi,Pruno,Dani,Maxi
-Mewtwo;Vivo
+Eevee;Vivo
 Groudon;Vivo
 Reshiram;Vivo
 Dragapult;Vivo
@@ -12,7 +12,7 @@ Snorlax;Vivo
 Emolga;Vivo
 Umbreon;Vivo
 Infernape;Vivo
-Eevee;Vivo
+Mewtwo;Vivo
 Tauros;Vivo
 Reuniclus;Vivo
 Whiscash;Vivo

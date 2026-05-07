@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Sistema {
@@ -88,7 +87,7 @@ public class Sistema {
 				capturarPokemon();
 				break;
 			case "3":
-				accederPc();
+				jugador.accederPc();
 				break;
 			case "4":
 				retarGimnasio();
@@ -127,7 +126,7 @@ public class Sistema {
 			}	
 		}
 		
-		 if (!hayPokemonVivoEnEquipo()) {
+		 if (!jugador.hayPokemonVivoEnEquipo()) {
              System.out.println("No tienes Pokemon vivos en tu equipo! Curalos primero.");
              return; 
 		 }
@@ -154,7 +153,7 @@ public class Sistema {
 			// Misma logica que la batalla de gimnasio
 
 			Pokemon pokemonRival = pokemonsMiembro.get(0);
-			Pokemon pokemonJugador = primerPokemonVivo(); // En caso de que no esten todos vivos es necesario verificar
+			Pokemon pokemonJugador = jugador.primerPokemonVivo(); // En caso de que no esten todos vivos es necesario verificar
 															// el primer pokemon vivo
 
 			System.out.println(miembro.getNombre() + " saca a " + pokemonRival.getNombre() + "!");
@@ -177,7 +176,7 @@ public class Sistema {
 
 					// Si el pokemon del jugador fue derrotado
 					if (pokemonJugador == null) {
-						if (!hayPokemonVivoEnEquipo()) {
+						if (!jugador.hayPokemonVivoEnEquipo()) {
 							System.out.println("Te has quedado sin pokemons en tu equipo!");
 							System.out.println("Volviendo al menu...");
 							batallaActiva = false;
@@ -269,7 +268,7 @@ public class Sistema {
 	            }
 
 	            // Verificar que el jugador tenga al menos 1 pokemon vivo en su equipo
-	            if (!hayPokemonVivoEnEquipo()) {
+	            if (!jugador.hayPokemonVivoEnEquipo()) {
 	                System.out.println("No tienes Pokemon vivos en tu equipo! Curalos primero.");
 	                continue;
 	            }
@@ -284,13 +283,7 @@ public class Sistema {
 	    
 	}
 
-	private static boolean hayPokemonVivoEnEquipo() {
-		ArrayList<Pokemon> equipo = jugador.getMisPokemon();
-	    for (int i = 0; i < 6 && i < equipo.size(); i++) {
-	        if (equipo.get(i).getEstado().equalsIgnoreCase("Vivo")) return true;
-	    }
-	    return false;
-	}
+
 
 	private static void batallarContraGym(Gym gymElegido) {
 		System.out.println("\nDesafiando a " + gymElegido.getLider() + "!");
@@ -303,7 +296,7 @@ public class Sistema {
 		}
 		
 		Pokemon pokemonRival = pokemonsGym.get(0);
-		Pokemon pokemonJugador = primerPokemonVivo(); //En caso de que no esten todos vivos es necesario verificar el primer pokemon vivo
+		Pokemon pokemonJugador = jugador.primerPokemonVivo(); //En caso de que no esten todos vivos es necesario verificar el primer pokemon vivo
 		
 		System.out.println(gymElegido.getLider() + " saca a " + pokemonRival.getNombre() + "!");
 		System.out.println(jugador.getNombre() + " saca a " + pokemonJugador.getNombre() + "!");
@@ -324,7 +317,7 @@ public class Sistema {
 
 		               // Si el pokemon del jugador fue derrotado
 		               if (pokemonJugador == null) {
-		                   if (!hayPokemonVivoEnEquipo()) {
+		                   if (!jugador.hayPokemonVivoEnEquipo()) {
 		                       System.out.println("Te has quedado sin pokemons en tu equipo!");
 		                       System.out.println("Volviendo al menu...");
 		                       batallaActiva = false;
@@ -442,76 +435,6 @@ public class Sistema {
 		    }
 	}
 
-	private static Pokemon primerPokemonVivo() {
-		ArrayList<Pokemon> equipo = jugador.getMisPokemon();
-	    for (int i = 0; i < 6 && i < equipo.size(); i++) {
-	        if (equipo.get(i).getEstado().equalsIgnoreCase("Vivo")) return equipo.get(i);
-	    }
-	    return null;
-	}
-
-	private static void accederPc() {
-		boolean salir = false;
-		do {
-			ArrayList<Pokemon> lista = jugador.getMisPokemon();
-
-			if (lista.isEmpty()) {
-				System.out.println("No tienes ningun Pokemon aun");
-				return;
-			}
-
-			System.out.println("\n====== PC de " + jugador.getNombre() + " =====");
-			for (int i = 0; i < lista.size(); i++) {
-				Pokemon p = lista.get(i);
-				String lugar = (i < 6) ? " [EQUIPO]" : " [PC]";
-				System.out.println((i + 1) + ")" + p.getNombre() + " | " + p.getTipo() + " | " + "STATS: "
-						+ p.getSumaStats() + " | " + p.getEstado() + lugar);
-			}
-
-			System.out.println("");
-			System.out.println("1) Cambiar Pokemon");
-			System.out.println("2) Salir");
-			System.out.println("Ingrese Opcion: ");
-			String opcion = s.nextLine();
-
-			switch (opcion) {
-
-			case "1":
-				if (lista.size() < 2) {
-					System.out.println("Necesitas al menos 2 Pokemon");
-					break;
-				}
-
-				try {
-					System.out.print("Ingrese numero del primer Pokemon: ");
-					int pos1 = Integer.parseInt(s.nextLine()) - 1;
-					System.out.print("Ingrese numero del segundo Pokermon: ");
-					int pos2 = Integer.parseInt(s.nextLine()) - 1;
-
-					if (pos1 < 0 || pos1 >= lista.size() || pos2 < 0 || pos2 >= lista.size()) {
-						System.out.println("Numeros ingresado fuera de rango. Intenta de nuevo.");
-						break;
-					}
-
-					Collections.swap(lista, pos1, pos2);
-					System.out.println("Intercambio realizado con exito");
-					System.out.println(lista.get(pos1).getNombre() + " <- -> " + lista.get(pos2).getNombre());
-				} catch (Exception e) {
-					System.out.println("Ingrese un numero valido.");
-				}
-				break;
-
-			case "2":
-				salir = true;
-				break;
-
-			default:
-				System.out.println("Opcion invalida");
-				break;
-			}
-
-		} while (!salir);
-	}
 
 	private static void capturarPokemon() {
 		System.out.println("Donde deseas ir a explorar?");
