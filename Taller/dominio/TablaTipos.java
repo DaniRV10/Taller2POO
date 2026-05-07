@@ -1,4 +1,4 @@
-package logica;
+package dominio;
 
 public class TablaTipos {
 	

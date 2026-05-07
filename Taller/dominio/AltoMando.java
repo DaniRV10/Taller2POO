@@ -1,4 +1,4 @@
-package logica;
+package dominio;
 
 import java.util.ArrayList;
 

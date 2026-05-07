@@ -1,4 +1,4 @@
-package logica;
+package dominio;
 
 import java.util.ArrayList;
 
@@ -74,18 +74,9 @@ public class Entrenador {
 		int cantEquipo = (misPokemon.size() <= 6) ? misPokemon.size() : 6;
 		for(int i = 0; i<cantEquipo; i++) {
 			Pokemon p = misPokemon.get(i);
-			System.out.println((i+1) +") "+ p.getNombre() + "|" + p.getTipo() + "|Stats totales: "+p.sumaStats());
+			System.out.println((i+1) +") "+ p.getNombre() + "|" + p.getTipo() + "|Stats totales: "+p.getSumaStats());
 		}
 		
 	}
-
-
-
-	
-	
-	
-	
-	
-	
 
 }

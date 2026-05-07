@@ -16,7 +16,7 @@ Eevee;Vivo
 Tauros;Vivo
 Reuniclus;Vivo
 Whiscash;Vivo
-Victini;Vivo
+Porygon-Z;Vivo
 Mamoswine;Vivo
 Plusle;Vivo
 Minior;Vivo
@@ -25,7 +25,8 @@ Charizard;Vivo
 Aerodactyl;Vivo
 Magcargo;Vivo
 Lucario;Vivo
-Porygon-Z;Vivo
+Victini;Vivo
 Froslass;Vivo
 Staraptor;Vivo
 Azumarill;Vivo
+Arbok;Vivo

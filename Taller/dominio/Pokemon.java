@@ -1,4 +1,4 @@
-package logica;
+package dominio;
 
 public class Pokemon {
 	private String nombre;
@@ -24,7 +24,7 @@ public class Pokemon {
 		this.estado = "Vivo";
 	}
 	
-	public int sumaStats() {
+	public int getSumaStats() {
 		return vida + ataque + defensa + SpAtaque + SpDefensa + velocidad;
 	}
 
@@ -76,9 +76,7 @@ public class Pokemon {
 		return tipo;
 	}
 	
-	public int getSumaStats() {
-		return sumaStats();
-	}
+
 
 	@Override
 	public String toString() {

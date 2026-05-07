@@ -1,6 +1,8 @@
 package logica;
-//Carlos Montenegro Perez 22154893-0 ICCI
+//Carlos Alberto Montenegro Perez 22154893-0 ICCI
+//Daniel Alexanders Robles Valdenegro 20738244-2 ICCI
 
+import dominio.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -381,7 +383,7 @@ public class Sistema {
 	    for (int i = 0; i < 6 && i < equipo.size(); i++) {
 	        Pokemon p = equipo.get(i);
 	        System.out.println((i + 1) + ") " + p.getNombre() + " | " + p.getTipo() 
-	            + " | Stats: " + p.sumaStats() + " | " + p.getEstado());
+	            + " | Stats: " + p.getSumaStats() + " | " + p.getEstado());
 	    }
 
 	    boolean flag = true;
@@ -411,10 +413,10 @@ public class Sistema {
 
 	private static Pokemon simularAtaque(Pokemon atacante, Pokemon defensor) {
 		    double efectividad = TablaTipos.getEfectividad(atacante.getTipo(), defensor.getTipo());
-		    double statsAtacante = atacante.sumaStats() * efectividad;
-		    double statsDefensor = defensor.sumaStats();
+		    double statsAtacante = atacante.getSumaStats() * efectividad;
+		    double statsDefensor = defensor.getSumaStats();
 
-		    System.out.println("\n" + atacante.getNombre() + " -> " + (int) atacante.sumaStats() + " puntos");
+		    System.out.println("\n" + atacante.getNombre() + " -> " + (int) atacante.getSumaStats() + " puntos");
 		    System.out.println(defensor.getNombre() + " -> " + (int) statsDefensor + " puntos");
 
 		    if (efectividad == 2.0) {
@@ -617,7 +619,7 @@ public class Sistema {
 
 	private static boolean cargarPartidaAnterior() throws FileNotFoundException{
 		try {
-			File archivo = new File("Registros.txt");
+			File archivo = new File("txts/Registros.txt");
 			Scanner lector = new Scanner(archivo);
 			
 			if(!lector.hasNextLine()) {
@@ -682,7 +684,7 @@ public class Sistema {
 		String medallas = jugador2.getLideresDerrotados().isEmpty()? "none": String.join(",", jugador2.getLideresDerrotados());
 		
 		try {
-			FileWriter fw = new FileWriter("Registros.txt");
+			FileWriter fw = new FileWriter("txts/Registros.txt");
 	        BufferedWriter bw = new BufferedWriter(fw);
 	        
 	        bw.write(jugador2.getNombre() + ";" + medallas );
@@ -719,7 +721,7 @@ public class Sistema {
 
 	private static void cargarGyms() throws FileNotFoundException{
 		try {
-			File archivo = new File("Gimnasios.txt");
+			File archivo = new File("txts/Gimnasios.txt");
 			Scanner lector = new Scanner(archivo);
 			
 			while(lector.hasNextLine()) {
@@ -747,7 +749,7 @@ public class Sistema {
 
 	private static void cargarAltoMando() throws FileNotFoundException{
 		try {
-			File archivo = new File("Alto Mando.txt");
+			File archivo = new File("txts/Alto Mando.txt");
 			Scanner lector = new Scanner(archivo);
 			
 			while(lector.hasNextLine()) {
@@ -773,7 +775,7 @@ public class Sistema {
 
 	private static void cargarHabitats() throws FileNotFoundException{
 		try {
-			File archivo = new File("Habitats.txt");
+			File archivo = new File("txts/Habitats.txt");
 			Scanner lector = new Scanner(archivo);
 			
 			while(lector.hasNextLine()) {
@@ -792,7 +794,7 @@ public class Sistema {
 
 	private static void cargarPokedex() throws FileNotFoundException{
 		try {
-			File archivo = new File("Pokedex.txt");
+			File archivo = new File("txts/Pokedex.txt");
 			Scanner lector = new Scanner(archivo);
 			while(lector.hasNextLine()) {
 				String linea = lector.nextLine();
