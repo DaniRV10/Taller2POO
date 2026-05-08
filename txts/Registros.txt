@@ -30,3 +30,5 @@ Froslass;Vivo
 Staraptor;Vivo
 Azumarill;Vivo
 Arbok;Vivo
+Wailord;Vivo
+Psyduck;Vivo

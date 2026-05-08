@@ -513,6 +513,7 @@ public class Sistema {
 			case "1":
 				System.out.println(pokemonEncontrado.getNombre() + " capturado con exito!!");
 				jugador.añadirPokemon(pokemonEncontrado);
+				System.out.println(pokemonEncontrado.getNombre()+" ha sido agregado a tu equipo!");
 				flag=false;
 				break;
 			case "2":

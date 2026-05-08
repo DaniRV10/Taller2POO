@@ -35,7 +35,6 @@ public class Entrenador {
 			return;
 		}
 		misPokemon.add(p);
-		System.out.println(p.getNombre() + " ha sido agregado a tu equipo!");
 		
 	}
 	public void añadirMedalla(String nombre) {
