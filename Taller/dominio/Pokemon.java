@@ -76,17 +76,5 @@ public class Pokemon {
 		return tipo;
 	}
 	
-
-
-	@Override
-	public String toString() {
-		return "Pokemon [nombre=" + nombre + ", estado=" + estado + "]";
-	}
-
 	
-	
-	
-	
-	
-
 }

@@ -231,6 +231,11 @@ public class Sistema {
 
 	private static void retarGimnasio() {
 		//Mostrar gimnasios disponibles
+		if(jugador.getMisPokemon().isEmpty()) {
+			System.out.println("No tienes equipo pokemon para retar los gimnasios, vuelve con un equipo pokemon.");
+			return;
+			
+		}
 		System.out.println("===== GIMNASIOS =====");
 		for (Gym g : lideresGym) {
 	        System.out.println(g.getNumGym() + ") " + g.getLider() + " - " + g.getEstado());
